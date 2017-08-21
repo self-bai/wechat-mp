@@ -1,7 +1,8 @@
-package com.xb.wechatmp.service.impl;
+package com.xb.wechatmp.service.weixin.impl;
 
-import com.xb.wechatmp.service.WxMpConfigStorage;
-import com.xb.wechatmp.service.WxMpService;
+import com.xb.wechatmp.service.weixin.http.RequestHttp;
+import com.xb.wechatmp.service.weixin.WxMpConfigStorage;
+import com.xb.wechatmp.service.weixin.WxMpService;
 import com.xb.wechatmp.util.weixin.crypto.SHA1;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Service;
  * 2017-08-21 15:17
  **/
 @Service
-public class WxMpServiceImpl implements WxMpService {
+public abstract class WxMpServiceAbstractImpl<H, P> implements WxMpService, RequestHttp<H, P> {
 
-    private final Logger log = Logger.getLogger(WxMpServiceImpl.class);
+    private final Logger log = Logger.getLogger(WxMpServiceAbstractImpl.class);
     private WxMpConfigStorage wxMpConfigStorage;
 
     @Override
@@ -27,22 +28,24 @@ public class WxMpServiceImpl implements WxMpService {
 
     @Override
     public String getAccessToken() {
-        return null;
-    }
-
-    @Override
-    public String getAccessToken(boolean forceRefresh) {
-        return null;
+        return getAccessToken(false);
     }
 
     @Override
     public String get(String url, String queryParam) {
+//        return execute(SimpleGetRequestExecutor.create(this), url, queryParam);
         return null;
     }
 
     @Override
     public String post(String url, String postData) {
         return null;
+    }
+
+    @Override
+    public void setWxMpConfigStorage(WxMpConfigStorage wxConfigProvider) {
+        this.wxMpConfigStorage = wxConfigProvider;
+        this.initHttp();
     }
 
     public WxMpConfigStorage getWxMpConfigStorage() {

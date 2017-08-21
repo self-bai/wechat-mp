@@ -1,4 +1,4 @@
-package com.xb.wechatmp.service;
+package com.xb.wechatmp.service.weixin;
 
 /**
  * 微信API的Service
@@ -52,4 +52,10 @@ public interface WxMpService {
      */
     String post(String url, String postData);
 
+    void initHttp();
+
+    /**
+     * 注入 {@link WxMpConfigStorage} 的实现，并完成initHttp，因此不使用注解方式注入
+     */
+    void setWxMpConfigStorage(WxMpConfigStorage wxConfigProvider);
 }
