@@ -1,0 +1,19 @@
+server:
+  context-path: /wechat-mp
+  port: 8080
+
+logging:
+ level:
+  org.springframework.web: DEBUG
+  com.xb.wechatcp: DEBUG
+
+spring:
+  thymeleaf:
+    cache: false
+
+wechat:
+ cp:
+  appId: appid
+  secret: secret
+  token: token
+  aeskey: aeskey
