@@ -4,6 +4,7 @@ import com.xb.wechatmp.service.weixin.http.RequestHttp;
 import com.xb.wechatmp.service.weixin.WxMpConfigStorage;
 import com.xb.wechatmp.service.weixin.WxMpService;
 import com.xb.wechatmp.util.weixin.crypto.SHA1;
+import com.xb.wechatmp.util.weixin.exception.WxErrorException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public abstract class WxMpServiceAbstractImpl<H, P> implements WxMpService, Requ
     }
 
     @Override
-    public String getAccessToken() {
+    public String getAccessToken() throws WxErrorException {
         return getAccessToken(false);
     }
 

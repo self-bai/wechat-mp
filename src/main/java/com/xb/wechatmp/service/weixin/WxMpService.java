@@ -1,5 +1,7 @@
 package com.xb.wechatmp.service.weixin;
 
+import com.xb.wechatmp.util.weixin.exception.WxErrorException;
+
 /**
  * 微信API的Service
  * 2017-08-21 15:08
@@ -23,7 +25,7 @@ public interface WxMpService {
      *
      * @see #getAccessToken(boolean)
      */
-    String getAccessToken();
+    String getAccessToken() throws WxErrorException;
 
     /**
      * <pre>
@@ -39,7 +41,7 @@ public interface WxMpService {
      *
      * @param forceRefresh 强制刷新
      */
-    String getAccessToken(boolean forceRefresh);
+    String getAccessToken(boolean forceRefresh) throws WxErrorException;
 
 
     /**

@@ -1,12 +1,16 @@
 package com.xb.wechatmp.service.weixin.impl;
 
 import com.xb.wechatmp.service.weixin.WxMpConfigStorage;
+import com.xb.wechatmp.service.weixin.http.ApacheHttpClientBuilder;
+import com.xb.wechatmp.util.ToStringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * WxMpInMemoryConfigStorage
- * 基于内存的微信配置provider，在实际生产环境中应该将这些配置持久化
- *
+ * 基于内存的微信配置provider，应该将这些配置持久化
  * 2017-08-21 15:24
  **/
 @Service
@@ -22,9 +26,19 @@ public class WxMpConfigStorageImpl implements WxMpConfigStorage {
     private volatile String httpProxyUsername;
     private volatile String httpProxyPassword;
 
+    protected Lock accessTokenLock = new ReentrantLock();
+
+    private volatile ApacheHttpClientBuilder apacheHttpClientBuilder;
+
     @Override
     public String getAccessToken() {
         return this.accessToken;
+    }
+
+    @Override
+    public synchronized void updateAccessToken(String accessToken, int expiresInSeconds) {
+        this.accessToken = accessToken;
+        this.expiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000L;
     }
 
     @Override
@@ -67,6 +81,36 @@ public class WxMpConfigStorageImpl implements WxMpConfigStorage {
         return this.httpProxyPort;
     }
 
+    @Override
+    public String getHttpProxyUsername() {
+        return this.httpProxyUsername;
+    }
+
+    @Override
+    public String getHttpProxyPassword() {
+        return this.httpProxyPassword;
+    }
+
+    @Override
+    public Lock getAccessTokenLock() {
+        return this.accessTokenLock;
+    }
+
+    @Override
+    public ApacheHttpClientBuilder getApacheHttpClientBuilder() {
+        return this.apacheHttpClientBuilder;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toSimpleString(this);
+    }
+
+    @Override
+    public boolean autoRefreshToken() {
+        return true;
+    }
+
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
@@ -93,5 +137,21 @@ public class WxMpConfigStorageImpl implements WxMpConfigStorage {
 
     public void setHttpProxyPort(int httpProxyPort) {
         this.httpProxyPort = httpProxyPort;
+    }
+
+    public void setHttpProxyUsername(String httpProxyUsername) {
+        this.httpProxyUsername = httpProxyUsername;
+    }
+
+    public void setHttpProxyPassword(String httpProxyPassword) {
+        this.httpProxyPassword = httpProxyPassword;
+    }
+
+    public void setApacheHttpClientBuilder(ApacheHttpClientBuilder apacheHttpClientBuilder) {
+        this.apacheHttpClientBuilder = apacheHttpClientBuilder;
+    }
+
+    public void setAccessTokenLock(Lock accessTokenLock) {
+        this.accessTokenLock = accessTokenLock;
     }
 }
