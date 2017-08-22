@@ -1,6 +1,5 @@
-package com.xb.wechatmp.service.weixin.impl;
+package com.xb.wechatmp.service.weixin.storage;
 
-import com.xb.wechatmp.service.weixin.WxMpConfigStorage;
 import com.xb.wechatmp.service.weixin.http.ApacheHttpClientBuilder;
 import com.xb.wechatmp.util.ToStringUtils;
 import org.springframework.stereotype.Service;
@@ -15,9 +14,16 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 @Service
 public class WxMpConfigStorageImpl implements WxMpConfigStorage {
+    /**
+     * 公众号或企业号，开发者设置的token
+     */
+    private volatile String token;
+    /**
+     * 公众号或微信号，微信端根据用户返回的加密后的token
+     */
+    private volatile String accessToken;
     private volatile String appId;
     private volatile String secret;
-    private volatile String accessToken;
     private volatile String aesKey;
     private volatile long expiresTime;
 
@@ -44,6 +50,11 @@ public class WxMpConfigStorageImpl implements WxMpConfigStorage {
     @Override
     public String getAppId() {
         return appId;
+    }
+
+    @Override
+    public String getToken() {
+        return this.token;
     }
 
     @Override
@@ -113,6 +124,10 @@ public class WxMpConfigStorageImpl implements WxMpConfigStorage {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public void setAppId(String appId) {

@@ -1,7 +1,7 @@
 package com.xb.wechatmp.service.weixin.impl;
 
 import com.xb.wechatmp.service.weixin.http.RequestHttp;
-import com.xb.wechatmp.service.weixin.WxMpConfigStorage;
+import com.xb.wechatmp.service.weixin.storage.WxMpConfigStorage;
 import com.xb.wechatmp.service.weixin.WxMpService;
 import com.xb.wechatmp.util.weixin.crypto.SHA1;
 import com.xb.wechatmp.util.weixin.exception.WxErrorException;
@@ -20,7 +20,7 @@ public abstract class WxMpServiceAbstractImpl<H, P> implements WxMpService, Requ
     @Override
     public boolean checkSignature(String timestamp, String nonce, String signature) {
         try {
-            return SHA1.gen(this.getWxMpConfigStorage().getAccessToken(), timestamp, nonce).equals(signature);
+            return SHA1.gen(this.getWxMpConfigStorage().getToken(), timestamp, nonce).equals(signature);
         } catch (Exception e) {
             this.log.error("Checking signature failed, and the reason is :" + e.getMessage());
             return false;

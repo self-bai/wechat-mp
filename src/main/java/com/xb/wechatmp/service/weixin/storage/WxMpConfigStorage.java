@@ -1,10 +1,11 @@
-package com.xb.wechatmp.service.weixin;
+package com.xb.wechatmp.service.weixin.storage;
 
 import com.xb.wechatmp.service.weixin.http.ApacheHttpClientBuilder;
 
 import java.util.concurrent.locks.Lock;
 
 /**
+ * 获取微信配置存储
  * 2017-08-21 15:21
  **/
 public interface WxMpConfigStorage {
@@ -20,6 +21,8 @@ public interface WxMpConfigStorage {
     void updateAccessToken(String accessToken, int expiresInSeconds);
 
     String getAppId();
+
+    String getToken();
 
     String getSecret();
 

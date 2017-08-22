@@ -1,5 +1,6 @@
 package com.xb.wechatmp.service.weixin;
 
+import com.xb.wechatmp.service.weixin.storage.WxMpConfigStorage;
 import com.xb.wechatmp.util.weixin.exception.WxErrorException;
 
 /**
